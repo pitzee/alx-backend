@@ -16,6 +16,9 @@ class LIFOCache(BaseCaching):
         self.keys = []
 
     def put(self, key, item):
+        """
+        Cache a key-value pair
+        """
         if key is None or item is None:
             return
         if key in self.cache_data:
