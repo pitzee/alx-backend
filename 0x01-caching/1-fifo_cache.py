@@ -21,18 +21,18 @@ class FIFOCache(BaseCaching):
         if key is None or item is None:
             pass
         else:
-            length = len(self.cache_data)
-            if length >= BaseCaching.MAX_ITEMS and key not in self.cache_data:
-                print("DISCARD: {}".format(self.order[0]))
-                del self.cache_data[self.order[0]]
-                del self.order[0]
-            self.order.append(key)
+            if key not in self.cache_data:
+                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                    discarded = self.order.pop(0)
+                    del self.cache_data[discarded]
+                    print("DISCARD: {}".format(discarded))
             self.cache_data[key] = item
+            self.order.append(key)
 
-        def get(self, key):
-            """
+    def get(self, key):
+        """
             Return the value linked to a given key, or None
-            """
-            if key is not None and key in self.cache_data.keys():
-                return self.cache_data[key]
-            return None
+        """
+        if key is not None and key in self.cache_data.keys():
+            return self.cache_data[key]
+        return None
